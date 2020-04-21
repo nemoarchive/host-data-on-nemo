@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Epiviz Mini Atlas</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/jquery-ui/jquery-ui.js"></script>
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="bower_components/epiviz-charts/src/renderingQueues/renderingQueue.js"></script>
+
+    <link rel="import" href="bower_components/epiviz-data-source/epiviz-data-source.html">
+    <link rel="import" href="bower_components/epiviz-charts/epiviz-charts.html">
+</head>
+
+<body>
+    <!-- Let the components know where the epiviz file server is running -->
+    <epiviz-data-source provider-type="epiviz.data.WebServerDataProvider" provider-id="fileapi"
+        provider-url="http://localhost:8000">
+    </epiviz-data-source>
+
+    <!-- initiliaze navigation to a gene location or genomic region 36340000 - 36400000-->
+    <epiviz-navigation
+        chr="chr18"
+        start=36340000
+        end=36400000
+    >
+    </epiviz-navigation>
+
+    <noscript>
+        Please enable JavaScript to view this website.
+    </noscript>
+</body>
+
+</html>

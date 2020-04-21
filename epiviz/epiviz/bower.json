@@ -1,0 +1,18 @@
+{
+    "name": "epiviz-app",
+    "authors": [
+      "Jayaram Kancherla <jayaram.kancherla@gmail.com>"
+    ],
+    "license": "MIT",
+    "dependencies": {
+      "polymer": "Polymer/polymer#^2.0.0",
+      "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
+      "epiviz-charts": "epiviz/epiviz-chart"
+    },
+    "resolutions": {
+      "polymer": "^2.0.0",
+      "lodash": "^4.17.10",
+      "epiviz-imports": "1de33dff8c"
+    },
+    "private": true
+  }
