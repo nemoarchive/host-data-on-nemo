@@ -1,6 +1,5 @@
 ### this is an example from the Lein cross species paper. Data was originally given to us in Rdata objects, so there was some prep work done in R - see Prep_CountMatrix_for_Scanpy.R for details. 
 
-
 import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
@@ -15,7 +14,7 @@ import json
 import pyensembl
 import uuid
 
-### gene references 
+### gene references - need ensembl to gene symbol lookup table - obtained from ensembl site 
 
 ## human 
 hs96 = pd.read_csv('/local/projects-t3/idea/bherb/annotation/Hsapiens/HS_Ensembl96.csv')
@@ -30,22 +29,16 @@ cj99.columns = ['ensembl_id','ensembl_version','gene_symbol']
 
 
 
-### total downsample list
-
+### NeMO team was given a separate list of cells that were included in the downsample set
 dnsamp = pd.read_csv("/local/projects-t3/idea/bherb/NeMO_work/Lein_CrossSpecies_Paper/Final_annotation_and_downsampling/downsampled_ids/final_downsampled_ids.csv",index_col=0) # 64350 tot cells - this is more than total of all 200 max cell per cluster downsample lists (total =53233)
 
-
 ### human
-
-human = sc.read_mtx("/local/projects-t3/idea/bherb/NeMO_work/Lein_CrossSpecies_Paper/Human/Human_Lein.mtx")
-
+human = sc.read_mtx("/local/projects-t3/idea/bherb/NeMO_work/Lein_CrossSpecies_Paper/Human/Human_Lein.mtx") #created in Prep_CountMatrix_for_Scanpy.R
 human = human.T ## somewhere we need to transform to cells x genes
-
-human_genes = pd.read_csv("/local/projects-t3/idea/bherb/NeMO_work/Lein_CrossSpecies_Paper/Human/Human_Lein_genes.csv")
+human_genes = pd.read_csv("/local/projects-t3/idea/bherb/NeMO_work/Lein_CrossSpecies_Paper/Human/Human_Lein_genes.csv") #created in Prep_CountMatrix_for_Scanpy.R
 
 gs = human_genes.x.tolist() ## truly gene symbol....
 gsl = {'gene_symbol':gs} ## create dictionary
-#es = counts3.var.gene_ids.tolist() ## this is also gene symbol..sad bear
 
 en96Gene = ['NA']*len(gs)
 engs96 = hs96.gene_symbol.tolist()
@@ -62,31 +55,21 @@ es=en96Gene
 ## Joshua wants .var to have gene symbol in 'gene_symbol' column, and ensembl in index
 
 geneDF = pd.DataFrame(data=gsl,index=es)
-
 naind=np.where(np.array(geneDF.index.tolist())!='NA')
 
 human = human[:,naind[0].tolist()]
 geneDF = geneDF.iloc[naind[0].tolist(),:]
 
 human.var.index = np.array(geneDF.index.tolist())
-
 human.var['gene_symbol'] = geneDF.gene_symbol.tolist()
-
-human_cells = pd.read_csv("/local/projects-t3/idea/bherb/NeMO_work/Lein_CrossSpecies_Paper/Human/Human_Lein_cells.csv")
-
+human_cells = pd.read_csv("/local/projects-t3/idea/bherb/NeMO_work/Lein_CrossSpecies_Paper/Human/Human_Lein_cells.csv") #created in Prep_CountMatrix_for_Scanpy.R
 human.obs.index = np.array(human_cells.iloc[:,0]).tolist()
-
-#human.var.index = np.array(human_genes.iloc[:,0]).tolist()
-
 
 human_meta = pd.read_csv("/local/projects-t3/idea/bherb/NeMO_work/Lein_CrossSpecies_Paper/Final_annotation_and_downsampling/human_anno.csv") #76533  - this is less than mtx file
 
 human_meta.index = np.array(human_meta.loc[:,'sample_id']).tolist()
-
 human_meta = human_meta.drop(labels = 'Unnamed: 0',axis=1) 
-
 human = human[np.array(human_meta.loc[:,'sample_id']).tolist(),:]
-
 human.obs = human_meta
 
 for i in list(set(human_meta)):
@@ -94,27 +77,22 @@ for i in list(set(human_meta)):
 
 ### tSNE coordinates
 
-human_allCells_tSNE = pd.read_csv("/local/projects-t3/idea/bherb/NeMO_work/Lein_CrossSpecies_Paper/Human/human_allCells_tSNE.csv",index_col=0)
+human_allCells_tSNE = pd.read_csv("/local/projects-t3/idea/bherb/NeMO_work/Lein_CrossSpecies_Paper/Human/human_allCells_tSNE.csv",index_col=0) #created in Prep_CountMatrix_for_Scanpy.R
 
 human_allCells_tSNE = human_allCells_tSNE.loc[human.obs.index.tolist(),:]
-
 human.obs['tSNE_1'] = human_allCells_tSNE['tSNE_1'].values
 human.obs['tSNE_2'] = human_allCells_tSNE['tSNE_2'].values
 
 human.write('/local/projects-t3/idea/bherb/NeMO_work/Lein_CrossSpecies_Paper/Human/Human_Lein_AllCells.h5ad')
-
-human = sc.read_h5ad('/local/projects-t3/idea/bherb/NeMO_work/Lein_CrossSpecies_Paper/Human/Human_Lein_AllCells.h5ad')
+#human = sc.read_h5ad('/local/projects-t3/idea/bherb/NeMO_work/Lein_CrossSpecies_Paper/Human/Human_Lein_AllCells.h5ad')
 
 ## downsample lists 
-
 human_ds = copy.deepcopy(human)
 human_ds = human_ds[list(dnsamp.iloc[np.where(np.array(dnsamp.species)=='human')[0],0]),:]
-
 
 human_ds.write('/local/projects-t3/idea/bherb/NeMO_work/Lein_CrossSpecies_Paper/Human/Human_Lein_Downsample.h5ad')
 
 ### uuid
-
 str(uuid.uuid4()) #'aab7a4ac-a569-4d6e-9173-23a48950231f'
 
 human_ds.write('/local/projects-t3/idea/bherb/NeMO_work/Lein_CrossSpecies_Paper/Human/aab7a4ac-a569-4d6e-9173-23a48950231f.h5ad')
