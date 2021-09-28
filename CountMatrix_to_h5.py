@@ -84,7 +84,7 @@ human.obs['tSNE_1'] = human_allCells_tSNE['tSNE_1'].values
 human.obs['tSNE_2'] = human_allCells_tSNE['tSNE_2'].values
 
 human.write('./bherb/NeMO_work/Lein_CrossSpecies_Paper/Human/Human_Lein_AllCells.h5ad')
-#human = sc.read_h5ad('/local/projects-t3/idea/bherb/NeMO_work/Lein_CrossSpecies_Paper/Human/Human_Lein_AllCells.h5ad')
+#human = sc.read_h5ad('./bherb/NeMO_work/Lein_CrossSpecies_Paper/Human/Human_Lein_AllCells.h5ad')
 
 ## downsample lists 
 human_ds = copy.deepcopy(human)
