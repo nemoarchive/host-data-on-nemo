@@ -14,7 +14,7 @@ mat
 
 intclust = data.frame(sample=c("GABAergic","Glutamatergic","Non-Neuronal"),color=c('#3EA185','#C95170','#6D7A67'),stringsAsFactors=FALSE)
 
-tmpdir = '/local/projects-t3/NEMO/dmz/nemoHub/CrossSpeciesPaperMOp/Human/ATAC/Class' ## location of bigwigs provided by author
+tmpdir = './nemoHub/CrossSpeciesPaperMOp/Human/ATAC/Class' ## location of bigwigs provided by author
 
 k= 'Human_MOp_ATAC_Class'
 
@@ -36,7 +36,7 @@ intInd = grep(i,intclust$sample)
 hexcolor = unique(intclust$color[intInd])
 rgbcolor = col2rgb(hexcolor[1])
 rgbcol = paste(rgbcolor[,1],collapse=', ')
-bigurl = gsub('/local/projects-t3/NEMO/dmz/nemoHub','http://data.nemoarchive.org/nemoHub',tmpfile)
+bigurl = gsub('./nemoHub','http://data.nemoarchive.org/nemoHub',tmpfile)
 cat(paste('track ',i,'\n','bigDataUrl ',bigurl,'\n','shortLabel ',i,'\n','longLabel ',k,'-',i,'\n','parent ',k,'\n','type bigWig','\n','color ',rgbcol,'\n\n',sep=""))
 }
 sink()
@@ -60,7 +60,7 @@ sink()
 
 ## MajorClust - random color for now, but make consistent bw CHN and CGN
 
-tmpdir = '/local/projects-t3/NEMO/dmz/nemoHub/CrossSpeciesPaperMOp/Human/dnaMethylation/MajorCluster/CGN'
+tmpdir = './nemoHub/CrossSpeciesPaperMOp/Human/dnaMethylation/MajorCluster/CGN'
 
 k= 'Human_MOp_CGN_Meth_MajorCluster'
 
@@ -85,7 +85,7 @@ intInd = which(intclust$sample==i)
 hexcolor = unique(intclust$color[intInd])
 rgbcolor = col2rgb(hexcolor[1])
 rgbcol = paste(rgbcolor[,1],collapse=', ')
-bigurl = gsub('/local/projects-t3/NEMO/dmz/nemoHub','http://data.nemoarchive.org/nemoHub',tmpfile)
+bigurl = gsub('./nemoHub','http://data.nemoarchive.org/nemoHub',tmpfile)
 cat(paste('track ',i,'\n','bigDataUrl ',bigurl,'\n','shortLabel ',i,'\n','longLabel ',k,'-',i,'\n','parent ',k,'\n','type bigWig','\n','color ',rgbcol,'\n\n',sep=""))
 }
 sink()
